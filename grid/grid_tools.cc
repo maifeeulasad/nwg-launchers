@@ -6,7 +6,11 @@
  * License: GPL3
  * */
 
-#include <filesystem>
+#if HAVE_FILESYSTEM_H
+    #include <filesystem>
+#else
+    #include <experimental/filesystem>
+#endif
 #include <string_view>
 #include <variant>
 
@@ -182,7 +186,7 @@ std::optional<DesktopEntry> desktop_entry(std::string&& path, const std::string&
 /*
  * Returns vector of strings out of the pinned cache file content
  * */
-std::vector<std::string> get_pinned(const std::filesystem::path& pinned_file) {
+std::vector<std::string> get_pinned(const std::experimental::filesystem::path& pinned_file) {
     std::vector<std::string> lines;
     std::ifstream in(pinned_file);
     if(!in) {

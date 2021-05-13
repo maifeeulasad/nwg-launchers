@@ -11,7 +11,11 @@
 
 #pragma once
 
-#include <filesystem>
+#if HAVE_FILESYSTEM_H
+    #include <filesystem>
+#else
+    #include <experimental/filesystem>
+#endif
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -28,8 +32,8 @@ namespace ns = nlohmann;
 
 extern int image_size; // button image size in pixels
 
-std::filesystem::path get_cache_home();
-std::filesystem::path get_config_dir(std::string_view);
+std::experimental::filesystem::path get_cache_home();
+std::experimental::filesystem::path get_config_dir(std::string_view);
 
 std::string detect_wm(void);
 
@@ -37,14 +41,14 @@ std::string get_term(std::string_view);
 
 std::string get_locale(void);
 
-std::string read_file_to_string(const std::filesystem::path&);
-void save_string_to_file(std::string_view, const std::filesystem::path&);
+std::string read_file_to_string(const std::experimental::filesystem::path&);
+void save_string_to_file(std::string_view, const std::experimental::filesystem::path&);
 std::vector<std::string_view> split_string(std::string_view, std::string_view);
 std::string_view take_last_by(std::string_view, std::string_view);
 
-ns::json json_from_file(const std::filesystem::path&);
+ns::json json_from_file(const std::experimental::filesystem::path&);
 ns::json string_to_json(std::string_view);
-void save_json(const ns::json&, const std::filesystem::path&);
+void save_json(const ns::json&, const std::experimental::filesystem::path&);
 void decode_color(std::string_view, RGBA& color);
 
 std::string get_output(const std::string&);

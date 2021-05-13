@@ -13,7 +13,11 @@
 
 #include <iostream>
 #include <fstream>
-#include <filesystem>
+#if HAVE_FILESYSTEM_H
+    #include <filesystem>
+#else
+    #include <experimental/filesystem>
+#endif
 #include <regex>
 #include <algorithm>
 
@@ -25,7 +29,7 @@
 #include "nwgconfig.h"
 #include "nwg_classes.h"
 
-namespace fs = std::filesystem;
+namespace fs = std::experimental::filesystem;
 namespace ns = nlohmann;
 
 extern std::string h_align;

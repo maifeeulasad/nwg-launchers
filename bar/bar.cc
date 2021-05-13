@@ -183,7 +183,7 @@ int main(int argc, char *argv[]) {
     auto& icon_theme_ref = *icon_theme.get();
     auto icon_missing = Gdk::Pixbuf::create_from_file(DATA_DIR_STR "/nwgbar/icon-missing.svg");
 
-    if (std::filesystem::is_regular_file(css_file)) {
+    if (std::experimental::filesystem::is_regular_file(css_file)) {
         provider->load_from_path(css_file);
         std::cout << "Using " << css_file << '\n';
     } else {

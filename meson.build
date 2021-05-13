@@ -9,6 +9,9 @@ project('nwg-launchers', 'cpp',
 
 compiler = meson.get_compiler('cpp')
 
+#add_project_arguments(['-stdlib=libc++'], language : 'cpp')
+#add_project_link_arguments(['-stdlib=libc++','-lstdc++fs'], language : 'cpp')
+
 if compiler.has_link_argument('-lc++fs')
 	add_global_link_arguments('-lc++fs', language: 'cpp')
 elif compiler.has_link_argument('-lstdc++fs')

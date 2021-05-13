@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
     }
     Gtk::StyleContext::add_provider_for_screen(screen, provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
 
-    if (std::filesystem::is_regular_file(css_file)) {
+    if (std::experimental::filesystem::is_regular_file(css_file)) {
         provider->load_from_path(css_file);
         std::cout << "Using " << css_file << '\n';
     } else {

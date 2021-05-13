@@ -188,7 +188,7 @@ int main(int argc, char *argv[]) {
         std::array status { "' [INVALID]\n"sv, "' [OK]\n"sv };
         for (auto && dir: dirs_) {
             std::error_code ec;
-            auto is_dir = std::filesystem::is_directory(dir, ec) && !ec;
+            auto is_dir = std::experimental::filesystem::is_directory(dir, ec) && !ec;
             std::cout << '\'' << dir << status[is_dir];
             if (is_dir) {
                 dirs.emplace_back(dir);
@@ -275,7 +275,7 @@ int main(int argc, char *argv[]) {
     auto& icon_theme_ref = *icon_theme.get();
     auto icon_missing = Gdk::Pixbuf::create_from_file(DATA_DIR_STR "/nwgbar/icon-missing.svg");
 
-    if (!std::filesystem::is_regular_file(css_file)) {
+    if (!std::experimental::filesystem::is_regular_file(css_file)) {
         css_file = default_css_file;
     }
     provider->load_from_path(css_file);

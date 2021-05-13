@@ -18,7 +18,11 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <filesystem>
+#if HAVE_FILESYSTEM_H
+    #include <filesystem>
+#else
+    #include <experimental/filesystem>
+#endif
 
 #include "nwgconfig.h"
 #include "nwg_tools.h"
@@ -32,8 +36,8 @@ static std::string pid_file{};
 /*
  * Returns config dir
  * */
-std::filesystem::path get_config_dir(std::string_view app) {
-    std::filesystem::path path;
+std::experimental::filesystem::path get_config_dir(std::string_view app) {
+    std::experimental::filesystem::path path;
     char* val = getenv("XDG_CONFIG_HOME");
     if (!val) {
         val = getenv("HOME");
@@ -54,9 +58,9 @@ std::filesystem::path get_config_dir(std::string_view app) {
 /*
  * Returns path to cache directory
  * */
-std::filesystem::path get_cache_home() {
+std::experimental::filesystem::path get_cache_home() {
     char* home_ = getenv("XDG_CACHE_HOME");
-    std::filesystem::path home;
+    std::experimental::filesystem::path home;
     if (home_) {
         home = home_;
     } else {
@@ -118,16 +122,16 @@ std::string get_term(std::string_view config_dir) {
     auto terminal_file = concat(config_dir, "/terminal"sv);
 
     std::error_code ec;
-    auto term_file_exists = std::filesystem::is_regular_file(term_file, ec) && !ec;
+    auto term_file_exists = std::experimental::filesystem::is_regular_file(term_file, ec) && !ec;
     ec.clear();
-    auto terminal_file_exists = std::filesystem::is_regular_file(terminal_file, ec) && !ec;
+    auto terminal_file_exists = std::experimental::filesystem::is_regular_file(terminal_file, ec) && !ec;
     
     if (term_file_exists) {
         if (!terminal_file_exists) {
-            std::filesystem::rename(term_file, terminal_file);
+            std::experimental::filesystem::rename(term_file, terminal_file);
             terminal_file_exists = true;
         } else {
-            std::filesystem::remove(term_file);
+            std::experimental::filesystem::remove(term_file);
         }
     }
     
@@ -399,7 +403,7 @@ std::string get_locale() {
 /*
  * Returns file content as a string
  * */
-std::string read_file_to_string(const std::filesystem::path& filename) {
+std::string read_file_to_string(const std::experimental::filesystem::path& filename) {
     std::ifstream input(filename);
     std::stringstream sstr;
 
@@ -411,7 +415,7 @@ std::string read_file_to_string(const std::filesystem::path& filename) {
 /*
  * Saves a string to a file
  * */
-void save_string_to_file(std::string_view s, const std::filesystem::path& filename) {
+void save_string_to_file(std::string_view s, const std::experimental::filesystem::path& filename) {
     std::ofstream file(filename);
     file << s;
 }
@@ -447,7 +451,7 @@ std::string_view take_last_by(std::string_view str, std::string_view delimiter) 
 /*
  * Reads json from file
  * */
-ns::json json_from_file(const std::filesystem::path& path) {
+ns::json json_from_file(const std::experimental::filesystem::path& path) {
     ns::json json;
     std::ifstream{path} >> json;
     return json;
@@ -463,7 +467,7 @@ ns::json string_to_json(std::string_view jsonString) {
 /*
  * Saves json into file
  * */
-void save_json(const ns::json& json_obj, const std::filesystem::path& filename) {
+void save_json(const ns::json& json_obj, const std::experimental::filesystem::path& filename) {
     std::ofstream o(filename);
     o << std::setw(2) << json_obj << std::endl;
 }
